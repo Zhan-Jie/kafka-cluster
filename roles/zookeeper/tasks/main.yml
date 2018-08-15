@@ -1,0 +1,20 @@
+- name: 创建相关目录
+  file: name={{ zk_data_dir }} state=directory
+  with_items:
+  - zk_data_dir
+  - zk_home
+
+- name: distribute zookeeper files
+  copy: src=zookeeper.tar.gz dest={{ temp_dir }}/zookeeper.tar.gz
+
+- name: extract zookeeper files
+  shell: "tar -zxvf {{ temp_dir }}/zookeeper.tar.gz -C {{ zk_home }}"
+
+- name: generate configuration file
+  template: src=zoo.cfg.j2 dest={{ zk_home }}/conf/zoo.cfg
+
+- name: create myid file
+  shell: "echo -n {{ my_id }} >{{ zk_data_dir }}/myid"
+
+- name: start zookeeper
+  shell: "chmod +x {{ zk_home }}/bin/zkServer.sh ; {{ zk_home }}/bin/zkServer.sh start"

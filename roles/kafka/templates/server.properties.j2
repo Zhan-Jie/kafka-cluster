@@ -1,0 +1,4 @@
+broker.id={{ broker_id }}
+listeners=PLAINTEXT://{{ ansible_default_ipv4.address }}:9092
+log.dirs={{ kafka_log_dir }}
+zookeeper.connect={% for node_ip in groups['zookeeper'] %}{{ node_ip }}:2181{% if not loop.last %},{% endif %}{% endfor %}

@@ -1,0 +1,17 @@
+- name: 创建相关目录
+  file: name={{ item }} state=directory
+  with_items:
+  - kafka_home
+  - kafka_log_dir
+
+- name: distribute kafka files
+  copy: src=kafka.tgz dest={{ temp_dir }}/zookeeper.tgz
+
+- name: extract kafka files
+  shell: "tar -zxvf {{ temp_dir }}/zookeeper.tgz -C {{ kafka_home }}"
+
+- name: generate configuration file
+  template: src=server.properties.j2 dest={{ kafka_home }}/config/server.properties
+
+- name: start kafka server
+  shell: "chmod +x {{ kafka_home }}/bin/kafka-server-start.sh ; nohup {{ kafka_home }}/bin/kafka-server-start.sh {{ kafka_home }}/config/server.properties &"

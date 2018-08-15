@@ -1,0 +1,39 @@
+- name: create directory
+  file: name={{ java_home }} state=directory
+
+- name: copy JRE files
+  copy: src=jre-linux-64.tar.gz dest={{ temp_dir }}/java.tar.gz
+
+- name: extract jre files
+  shell: "tar -zxvf {{ temp_dir }}/java.tar.gz -C {{ java_home }}"
+
+- name: remvoe environment variable JAVA_HOME
+  lineinfile: path={{ item }} regexp="^export JAVA_HOME=" state=absent
+  with_items:
+  - /etc/profile
+  - /root/.bashrc
+  - /root/.bash_profile
+
+- name: remvoe environment variable CLASSPATH
+  lineinfile: path={{ item }} regexp="^export CLASSPATH=" state=absent
+  with_items:
+  - /etc/profile
+  - /root/.bashrc
+  - /root/.bash_profile
+
+- name: remvoe java bin from environment variable PATH
+  lineinfile: path={{ item }} regexp="^export PATH=\$JAVA_HOME/bin:\$PATH$" state=absent
+  with_items:
+  - /etc/profile
+  - /root/.bashrc
+  - /root/.bash_profile
+
+- name: set environment variable JAVA_HOME
+  shell: "echo '{{ item }}' >> /root/.bashrc"
+  with_items:
+  - export JAVA_HOME={{ java_home }}
+  - export CLASSPATH=.:{{ java_home }}/lib
+  - export PATH=$JAVA_HOME/bin:$PATH
+
+- name: apply system environment variables changes
+  shell: "source /etc/profile"

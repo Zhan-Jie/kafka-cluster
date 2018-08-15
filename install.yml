@@ -1,0 +1,11 @@
+- hosts: all
+  roles:
+  - java
+
+- hosts: zookeeper
+  roles:
+  - zookeeper
+
+- hosts: kafka
+  roles:
+  - kafka
