@@ -6,8 +6,8 @@
   - name: remove kafka installation files
     file: name={{ item }} state=absent
     with_items:
-    - {{ kafka_home }}
-    - {{ kafka_log_dir }}
+    - "{{ kafka_home }}"
+    - "{{ kafka_log_dir }}"
   
 - hosts: zookeeper
   tasks:
@@ -17,8 +17,8 @@
   - name: remove zookeeper installation files
     file: name={{ item }} state=absent
     with_items:
-    - {{ zk_home }}
-    - {{ zk_data_dir }}
+    - "{{ zk_home }}"
+    - "{{ zk_data_dir }}"
 
 - hosts: all
   tasks:

@@ -1,8 +1,8 @@
 - name: 创建相关目录
   file: name={{ item }} state=directory
   with_items:
-  - kafka_home
-  - kafka_log_dir
+  - "{{ kafka_home }}"
+  - "{{ kafka_log_dir }}"
 
 - name: distribute kafka files
   copy: src=kafka.tgz dest={{ temp_dir }}/zookeeper.tgz

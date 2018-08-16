@@ -1,8 +1,8 @@
 - name: 创建相关目录
-  file: name={{ zk_data_dir }} state=directory
+  file: name={{ item }} state=directory
   with_items:
-  - zk_data_dir
-  - zk_home
+  - "{{ zk_data_dir }}"
+  - "{{ zk_home }}"
 
 - name: distribute zookeeper files
   copy: src=zookeeper.tar.gz dest={{ temp_dir }}/zookeeper.tar.gz
