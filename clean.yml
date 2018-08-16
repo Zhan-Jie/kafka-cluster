@@ -1,0 +1,44 @@
+- hosts: kafka
+  tasks:
+  - name: stop kafka server
+    shell: "chmod +x {{ kafka_home }}/bin/kafka-server-stop.sh ; {{ kafka_home }}/bin/kafka-server-stop.sh"
+    ignore_errors: true
+  - name: remove kafka installation files
+    file: name={{ item }} state=absent
+    with_items:
+    - {{ kafka_home }}
+    - {{ kafka_log_dir }}
+  
+- hosts: zookeeper
+  tasks:
+  - name: stop zookeeper server
+    shell: "chmod +x {{ zk_home }}/bin/zkServer.sh ; {{ zk_home }}/bin/zkServer.sh stop"
+    ignore_errors: true
+  - name: remove zookeeper installation files
+    file: name={{ item }} state=absent
+    with_items:
+    - {{ zk_home }}
+    - {{ zk_data_dir }}
+
+- hosts: all
+  tasks:
+  - name: remvoe environment variable JAVA_HOME
+    lineinfile: path={{ item }} regexp="^export JAVA_HOME=" state=absent
+    with_items:
+    - /etc/profile
+    - /root/.bashrc
+    - /root/.bash_profile
+  - name: remvoe environment variable CLASSPATH
+    lineinfile: path={{ item }} regexp="^export CLASSPATH=" state=absent
+    with_items:
+    - /etc/profile
+    - /root/.bashrc
+    - /root/.bash_profile
+  - name: remvoe java bin from environment variable PATH
+    lineinfile: path={{ item }} regexp="^export PATH=\$JAVA_HOME/bin:\$PATH$" state=absent
+    with_items:
+    - /etc/profile
+    - /root/.bashrc
+    - /root/.bash_profile
+  - name: apply system environment variables changes
+    shell: "source /etc/profile"
