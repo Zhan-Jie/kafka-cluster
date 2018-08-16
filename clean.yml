@@ -42,3 +42,5 @@
     - /root/.bash_profile
   - name: apply system environment variables changes
     shell: "source /etc/profile"
+  - name: remove java files
+    file: name={{ java_home }} state=absent
