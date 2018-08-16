@@ -1,0 +1,9 @@
+{
+    "java_home": "/opt/java8",
+    "zookeeper_hosts": ["172.27.24.130","172.27.24.146","172.27.24.176"],
+    "zookeeper_home": "/opt/zookeeper",
+    "zookeeper_data_dir": "/opt/zookeeper/data",
+    "kafka_hosts": ["172.27.24.130","172.27.24.146","172.27.24.176"],
+    "kafka_home": "/opt/kafka",
+    "kafka_log_dir": "/opt/kafka/logs"
+}
